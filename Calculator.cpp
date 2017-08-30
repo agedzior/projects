@@ -1,15 +1,19 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-
+#include <math.h>
+#include <cmath>
 #include <windows.h>
 
 
 using namespace std;
 
-int menu, menuB, number1, number2, result;
+int menu, number1, number2, result;
+int i, j, k, si, n, m, t, s, p;
+
 double a, b, c, r, h, pole, obwod;
 char sign;
+
 HANDLE hOut;
 
 
@@ -82,9 +86,9 @@ public:
 		SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE);
 		cout << "Dla ktorej figury mam wykonac obliczenia?\n1.kwadrat\n2.prostokat\n3.kolo\n4.trojkat\n5.wyjscie\t";
 		SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
-		cin >> menuB;
+		cin >> menu;
 		SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY);
-		switch (menuB)
+		switch (menu)
 		{
 		case 1:
 			this->Kwadrat();
@@ -100,6 +104,9 @@ public:
 			break;
 		case 5:
 			exit(0);
+		default:
+			SetConsoleTextAttribute(hOut, FOREGROUND_RED);
+			cout << "Brak opcji w menu! Sprobuj ponownie!";
 		}
 	}
 	void Uruchom() {
@@ -197,12 +204,127 @@ public:
 		obwod = this->PoliczTrojkatObwod(a, b, c);
 		this->WyswietlPole(pole,obwod);
 	}
-
-
-/*-----------------------------------------KALKULATOR WIELOMIANOW----------------------------------------------------------------*/
-/*-----------------------------------------KALKULATOR WEKTOROW----------------------------------------------------------------*/
-/*-----------------------------------------KALKULATOR MACIERZY----------------------------------------------------------------*/
 };
+
+
+/*-----------------------------------------KALKULATOR MACIERZY----------------------------------------------------------------*/
+//-------------------------------------------------------MNO¯ENIE
+int mnozenieMac() {
+	if (m != s)
+		cout << "Mnozenie macierzy niemozliwe - Ilosc kolumn w macierzy B musi byæ taka sama jak ilosc wierszy w macierzy A\n";
+	else {
+		int * A = new int[n * m];
+		int * B = new int[m * t];
+		int * C = new int[n * t];
+
+		// odczytujemy zawartoœæ macierzy A
+		cout << "Wypisz elementy macierzy A:\n";
+		for (i = 0; i < n; i++)
+			for (j = 0; j < m; j++) cin >> A[i * m + j];
+
+		// odczytujemy zawartoœæ macierzy b
+		cout << "Wypisz elementy macierzy B:\n";
+		for (i = 0; i < m; i++)
+			for (j = 0; j < t; j++) cin >> B[i * t + j];
+
+		// Obliczamy iloczyn macierzy A i B w C
+
+		for (i = 0; i < n; i++)
+			for (j = 0; j < t; j++)
+			{
+				si = 0;
+				for (k = 0; k < m; k++)
+					si += A[i * m + k] * B[k * t + j];
+				C[i * t + j] = si;
+			}
+
+		// Wyprowadzamy wyniki
+
+		cout << "\nMacierz C=AxB\n";
+		for (i = 0; i < n; i++)
+		{
+			for (j = 0; j < t; j++) cout << C[i * t + j] << " ";
+			cout << endl;
+		}
+	}
+	return 0;
+}
+
+//----------------------------------------------------------DODAWANIE
+int dodawanieMac()
+{
+
+	p = n * m;
+	int * A = new int[p];
+	int * B = new int[p];
+	int * C = new int[p];
+	cout << "Wypisz elementy macierzy A:\n";
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++) cin >> A[i * m + j];
+
+	cout << "Wypisz elementy macierzy B:\n";
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++) cin >> B[i * m + j];
+
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++)
+		{
+			p = i * m + j;       // indeks elementu macierzy A, B i C
+			C[p] = A[p] + B[p];
+		}
+
+	cout << "\nC=A+B:\n";
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++) cout << C[i * m + j] << " ";
+		cout << endl;
+	}
+	return 0;
+}
+
+//---------------------------------------------------ODEJMOWANIE
+int odejmowanieMac() {
+	p = n * m;
+	int * A = new int[p];
+	int * B = new int[p];
+	int * C = new int[p];
+	cout << "Wypisz elementy macierzy A:\n";
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++) cin >> A[i * m - j];
+
+	cout << "Wypisz elementy macierzy B:\n";
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++) cin >> B[i * m - j];
+
+	for (i = 0; i < n; i++)
+		for (j = 0; j < m; j++)
+		{
+			p = i * m - j;       // indeks elementu macierzy A, B i C
+			C[p] = A[p] - B[p];
+		}
+
+	cout << "\nC=A+B:\n";
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++) cout << C[i * m - j] << " ";
+		cout << endl;
+	}
+	return 0;
+}
+
+int pobierzMac() {
+	cout << "\nWprowadz ilosc wierszy macierzy A:\t";
+	cin >> n;
+	cout << "Wprowadz ilosc kolumn macierzy A:\t";
+	cin >> m;
+	cout << "Wprowadz ilosc wierszy macierzy B:\t";
+	cin >> s;
+	cout << "Wprowadz ilosc kolumn macierzy B:\t";
+	cin >> t;
+	return 0;
+}
+/*-----------------------------------------KALKULATOR WIELOMIANOW-------------------------------------------------------------*/
+
 
 
 int main()
@@ -210,9 +332,9 @@ int main()
 	
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_BLUE);
-	cout << "MENU:\n1.Prosty kalkulator\n2.Obliczanie pola i obwodu figur\n";
-		//2.Kalkulator wielomanow\n3.Kalkulator wektorow\n4.Kalkulator macierzy\n
-		cout<<"6.Zakoncz\n";
+	cout << "MENU:\n1.Prosty kalkulator\n2.Obliczanie pola i obwodu figur\n3.Kalkulator macierzy\n";
+		//4.Kalkulator wielomianow\n
+		cout<<"5.Zakoncz\n";
 	do {
 		SetConsoleTextAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 		cout << "\nKtorego kalkulatora uzyc?\t";
@@ -230,19 +352,39 @@ int main()
 			Figury*nFig = new Figury();
 			nFig->Uruchom();
 		} break;
-		case 3: {} break;
-		case 4: {} break;
-		case 5: 
+		case 3: 
 		{
-			
+			cout << "1.Mnozenie macierzy\n2.Dodawanie macierzy\n3.Odejmowanie macierzy:\t";
+			cin >> menu;
+			switch (menu)
+			{
+			case 1:
+				pobierzMac();
+				mnozenieMac();
+				break;
+			case 2:
+				pobierzMac();
+				dodawanieMac();
+				break;
+			case 3:
+				pobierzMac();
+				odejmowanieMac();
+				break;
+			default:
+				SetConsoleTextAttribute(hOut, FOREGROUND_RED);
+				cout << "Brak opcji w menu!";
+				break;
+			}
 		} 
 		break;
-		case 6: exit(0);
+		case 4: {} break;
+
+		case 5: exit(0);
 		default:
 			SetConsoleTextAttribute(hOut, FOREGROUND_RED);
 			cout << "Brak opcji w menu! Sprobuj ponownie!";
 		}
-	} while (menu = 6);
+	} while (menu = 5);
 
 	system("PAUSE");
 	return 0;
